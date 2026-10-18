@@ -1,5 +1,5 @@
-// Fixpass extension background: starts Spotlight on the active tab, takes the screenshot
-// and sends the report to the Fixpass server. Nothing is sent until you press Send.
+// FixSpot extension background: starts Spotlight on the active tab, takes the screenshot
+// and sends the report to the FixSpot server. Nothing is sent until you press Send.
 import { DEFAULT_SERVER } from './config.js';
 const api = globalThis.browser || globalThis.chrome;
 
@@ -12,13 +12,13 @@ async function start( tabId ) {
 		await api.scripting.executeScript( { target: { tabId }, files: [ 'src/content.js' ] } );
 		return {};
 	} catch {
-		return { error: 'Fixpass cannot run on this page (browser pages and the extension store are off limits).' };
+		return { error: 'FixSpot cannot run on this page (browser pages and the extension store are off limits).' };
 	}
 }
 
 async function pageErrors( tabId ) {
 	try {
-		const [ r ] = await api.scripting.executeScript( { target: { tabId }, world: 'MAIN', func: () => window.__fixpassErrors || [] } );
+		const [ r ] = await api.scripting.executeScript( { target: { tabId }, world: 'MAIN', func: () => window.__fixspotErrors || [] } );
 		return r.result || [];
 	} catch {
 		return [];

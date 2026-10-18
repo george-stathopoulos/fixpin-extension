@@ -1,10 +1,10 @@
-// Fixpass Spotlight overlay: click an element or drag a box, add a note, send.
+// FixSpot Spotlight overlay: click an element or drag a box, add a note, send.
 ( function () {
 	'use strict';
-	if ( window.__fixpassActive ) {
+	if ( window.__fixspotActive ) {
 		return;
 	}
-	window.__fixpassActive = true;
+	window.__fixspotActive = true;
 	var api = globalThis.browser || globalThis.chrome;
 	var MARK = 'fxp-ext-ui';
 	var spots = [];
@@ -28,7 +28,7 @@
 		'<strong id="count"></strong><textarea id="note" rows="3" maxlength="4000" placeholder="What is wrong? (optional)"></textarea>' +
 		'<div class="row"><select id="days"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option></select>' +
 		'<input id="pass" placeholder="Passcode (optional)" maxlength="60" autocomplete="off"></div>' +
-		'<small>Sent to Fixpass and deleted when the link expires. Hide anything private first.</small>' +
+		'<small>Sent to FixSpot and deleted when the link expires. Hide anything private first.</small>' +
 		'<div class="row" style="margin-top:8px"><button id="cancel">Cancel</button><button id="send" class="p">Send</button></div>' +
 		'<p class="err" id="err" hidden></p></div>';
 	document.documentElement.appendChild( host );
@@ -37,7 +37,7 @@
 	function cleanup() {
 		window.removeEventListener( 'keydown', onKey, true );
 		host.remove();
-		window.__fixpassActive = false;
+		window.__fixspotActive = false;
 	}
 	function onKey( e ) {
 		if ( e.key === 'Escape' ) {

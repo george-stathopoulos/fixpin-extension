@@ -1,10 +1,10 @@
-# Fixpass extension
+# FixSpot extension
 
-Point at a problem on any web page and share a private, expiring link with the screenshot, the marked spots and any page errors. Works in Chrome, Edge, Brave and Firefox. Part of [Fixpass](https://george-stathopoulos.github.io/fixpass/); reports go to [fixpass-app](https://github.com/george-stathopoulos/fixpass-app).
+Point at a problem on any web page and share a private, expiring link with the screenshot, the marked spots and any page errors. Works in Chrome, Edge, Brave and Firefox. Part of [Fixpass for WordPress](https://george-stathopoulos.github.io/fixpass/); reports go to [fixspot](https://github.com/george-stathopoulos/fixspot).
 
 ## Use
 
-1. Click the Fixpass button (or press **Alt+Shift+F**).
+1. Click the FixSpot button (or press **Alt+Shift+F**).
 2. Reproduce the problem if it needs a click, then click it or drag a box around it (up to 5 spots).
 3. Add a note, choose how long the link lasts (1, 7 or 30 days), optionally set a passcode, and press **Send**.
 4. The link is copied. Paste it to your support team.
@@ -13,7 +13,7 @@ Errors (JavaScript errors, failed requests, console errors and warnings) are col
 
 ## Privacy
 
-Nothing leaves your browser until you press Send. Permissions: `activeTab` (screenshot and overlay on the page you click on), `scripting` (to add the overlay), `storage` (your server choice). No analytics. See the app's [privacy page](https://github.com/george-stathopoulos/fixpass-app/blob/main/docs/privacy.md).
+Nothing leaves your browser until you press Send. Permissions: `activeTab` (screenshot and overlay on the page you click on), `scripting` (to add the overlay), `storage` (your server choice). No analytics. See the app's [privacy page](https://github.com/george-stathopoulos/fixspot/blob/main/docs/privacy.md).
 
 ## Develop
 
@@ -21,7 +21,7 @@ No build step. Chrome/Edge: `chrome://extensions` → Developer mode → **Load 
 
 To use your own server, set it in the popup under **Server**, or change `DEFAULT_SERVER` in `src/config.js`.
 
-Package: `zip -r fixpass-extension.zip manifest.json src icons -x '*.DS_Store'`.
+Package: `zip -r fixspot-extension.zip manifest.json src icons -x '*.DS_Store'`.
 
 ## License
 
