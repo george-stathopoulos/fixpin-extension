@@ -1,10 +1,10 @@
-// FixSpot Spotlight overlay: click an element or drag a box, add a note, send.
+// FixPin Spotlight overlay: click an element or drag a box, add a note, send.
 ( function () {
 	'use strict';
-	if ( window.__fixspotActive ) {
+	if ( window.__fixpinActive ) {
 		return;
 	}
-	window.__fixspotActive = true;
+	window.__fixpinActive = true;
 	var api = globalThis.browser || globalThis.chrome;
 	var MARK = 'fxp-ext-ui';
 	var spots = [];
@@ -28,7 +28,7 @@
 		'<strong id="count"></strong><textarea id="note" rows="3" maxlength="4000" placeholder="What is wrong? (optional)"></textarea>' +
 		'<div class="row"><select id="days"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option></select>' +
 		'<input id="pass" placeholder="Passcode (optional)" maxlength="60" autocomplete="off"></div>' +
-		'<small>Sent to FixSpot and deleted when the link expires. Hide anything private first.</small>' +
+		'<small>Sent to FixPin and deleted when the link expires. Hide anything private first.</small>' +
 		'<div class="row" style="margin-top:8px"><button id="cancel">Cancel</button><button id="send" class="p">Send</button></div>' +
 		'<p class="err" id="err" hidden></p></div>';
 	document.documentElement.appendChild( host );
@@ -37,7 +37,7 @@
 	function cleanup() {
 		window.removeEventListener( 'keydown', onKey, true );
 		host.remove();
-		window.__fixspotActive = false;
+		window.__fixpinActive = false;
 	}
 	function onKey( e ) {
 		if ( e.key === 'Escape' ) {
@@ -72,7 +72,12 @@
 			d.appendChild( n );
 			b.appendChild( d );
 		} );
-		$( 'panel' ).hidden = ! spots.length;
+		// Keep the panel on the side of the page that has no spots, so it never covers one.
+		var mid = spots.reduce( function ( t, s ) { return t + s.px.x + s.px.w / 2; }, 0 ) / ( spots.length || 1 );
+		var panel = $( 'panel' );
+		panel.style.left = mid > innerWidth / 2 ? '16px' : 'auto';
+		panel.style.right = mid > innerWidth / 2 ? 'auto' : '16px';
+		panel.hidden = ! spots.length;
 		$( 'count' ).textContent = spots.length + ' spot' + ( spots.length === 1 ? '' : 's' ) + ' marked. Click again to add more (up to 5).';
 	}
 

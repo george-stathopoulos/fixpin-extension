@@ -1,9 +1,9 @@
 // Runs in the page: remembers errors that happen after Spotlight was started.
 ( function () {
-	if ( window.__fixspotErrors ) {
+	if ( window.__fixpinErrors ) {
 		return;
 	}
-	var list = ( window.__fixspotErrors = [] );
+	var list = ( window.__fixpinErrors = [] );
 	var add = function ( type, msg ) {
 		if ( list.length < 30 ) {
 			list.push( { type: type, msg: String( msg ).slice( 0, 600 ) } );
