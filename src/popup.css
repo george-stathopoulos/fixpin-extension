@@ -1,0 +1,7 @@
+:root{color-scheme:light dark;--pri:#3b5bdb}
+body{width:300px;margin:0;padding:14px;font:14px/1.45 system-ui,sans-serif}
+h1{font-size:18px;margin:0 0 6px}p{margin:6px 0}.muted{opacity:.7;font-size:12px}
+button{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid #8884;background:transparent;color:inherit;cursor:pointer}
+.primary{width:100%;background:var(--pri);border-color:var(--pri);color:#fff;font-weight:600;margin:8px 0}
+input{width:100%;box-sizing:border-box;padding:6px;margin:4px 0 8px;border-radius:6px;border:1px solid #8886;background:transparent;color:inherit}
+details{margin:8px 0}button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--pri);outline-offset:2px}

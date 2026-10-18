@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="popup.css"></head>
+<body>
+<h1>Fixpass</h1>
+<p>Point at what is wrong on this page and get a private link to share. No account.</p>
+<button id="go" class="primary">Spotlight a problem</button>
+<p id="msg" class="muted" role="status"></p>
+<details><summary>Server</summary>
+<label>Reports are sent to<input id="server" type="url"></label>
+<button id="save">Save</button> <button id="reset">Use default</button></details>
+<p class="muted">Errors are collected from the moment you click. Reproduce the problem after clicking, then point at it. <a href="https://george-stathopoulos.github.io/fixpass/" target="_blank" rel="noopener">Fixpass for WordPress</a></p>
+<script type="module" src="popup.js"></script>
+</body></html>
