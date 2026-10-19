@@ -10,10 +10,11 @@
 	var spots = [];
 	var host = document.createElement( 'div' );
 	host.className = MARK;
-	host.style.cssText = 'all:initial;position:fixed;inset:0;z-index:2147483647;cursor:crosshair';
+	host.style.cssText = 'all:initial;position:fixed;inset:0;z-index:2147483647';
 	var root = host.attachShadow( { mode: 'closed' } );
 	root.innerHTML =
 		'<style>*{box-sizing:border-box;font:14px/1.4 system-ui,sans-serif}' +
+		'.catch{position:fixed;inset:0;cursor:crosshair}.live{background:rgba(224,49,49,.2);border-style:dashed}' +
 		'.hint{position:fixed;top:12px;left:50%;transform:translateX(-50%);background:#1b1f2a;color:#fff;padding:10px 16px;border-radius:10px;box-shadow:0 4px 20px #0006;pointer-events:none}' +
 		'.box{position:fixed;border:3px solid #e03131;background:rgba(224,49,49,.14);border-radius:4px;pointer-events:none}' +
 		'.box b{position:absolute;top:-1px;left:-1px;background:#e03131;color:#fff;font:700 12px/1 system-ui;padding:4px 6px}' +
@@ -24,7 +25,7 @@
 		'button:focus-visible,textarea:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #3b5bdb;outline-offset:2px}' +
 		'.row{display:flex;gap:8px}.row>*{min-width:0}select{width:45%}.err{color:#c92a2a}small{color:#5b6475}</style>' +
 		'<div class="hint" id="hint">Click the problem or drag a box around it (Esc to cancel)</div>' +
-		'<div id="boxes"></div><div class="panel" id="panel" hidden>' +
+		'<div class="catch" id="catch"></div><div id="boxes"></div><div class="box live" id="live" hidden></div><div class="panel" id="panel" hidden>' +
 		'<strong id="count"></strong><textarea id="note" rows="3" maxlength="4000" placeholder="What is wrong? (optional)"></textarea>' +
 		'<div class="row"><select id="days"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option></select>' +
 		'<input id="pass" placeholder="Passcode (optional)" maxlength="60" autocomplete="off"></div>' +
@@ -81,15 +82,24 @@
 		$( 'count' ).textContent = spots.length + ' spot' + ( spots.length === 1 ? '' : 's' ) + ' marked. Click again to add more (up to 5).';
 	}
 
+	// Picking happens on its own layer under the panel, so typing in the panel never marks a spot.
 	var start = null;
-	host.addEventListener( 'mousedown', function ( e ) {
-		if ( e.composedPath()[ 0 ] !== host ) {
+	var live = $( 'live' );
+	function box( el, x, y, w, h ) {
+		el.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + w + 'px;height:' + h + 'px';
+	}
+	function move( e ) {
+		if ( ! start ) {
 			return;
 		}
-		start = { x: e.clientX, y: e.clientY };
-	} );
-	host.addEventListener( 'mouseup', function ( e ) {
-		if ( ! start || e.composedPath()[ 0 ] !== host || spots.length >= 5 ) {
+		live.hidden = false;
+		box( live, Math.min( start.x, e.clientX ), Math.min( start.y, e.clientY ), Math.abs( e.clientX - start.x ), Math.abs( e.clientY - start.y ) );
+	}
+	function finish( e ) {
+		window.removeEventListener( 'mousemove', move, true );
+		window.removeEventListener( 'mouseup', finish, true );
+		live.hidden = true;
+		if ( ! start || spots.length >= 5 ) {
 			start = null;
 			return;
 		}
@@ -97,17 +107,23 @@
 		var w = Math.abs( e.clientX - start.x ), h = Math.abs( e.clientY - start.y );
 		var cx = e.clientX, cy = e.clientY;
 		start = null;
-		var el;
+		var click = w < 5 && h < 5;
 		host.style.pointerEvents = 'none';
-		el = document.elementFromPoint( w < 5 && h < 5 ? cx : x + w / 2, w < 5 && h < 5 ? cy : y + h / 2 );
+		var el = document.elementFromPoint( click ? cx : x + w / 2, click ? cy : y + h / 2 );
 		host.style.pointerEvents = '';
-		if ( w < 5 && h < 5 && el ) {
+		if ( click && el ) {
 			var r = el.getBoundingClientRect();
 			x = Math.max( 0, r.left ); y = Math.max( 0, r.top ); w = Math.min( r.width, innerWidth ); h = Math.min( r.height, innerHeight );
 		}
 		spots.push( { px: { x: x, y: y, w: w, h: h }, selector: el ? selectorFor( el ) : '' } );
 		$( 'hint' ).hidden = true;
 		redraw();
+	}
+	$( 'catch' ).addEventListener( 'mousedown', function ( e ) {
+		e.preventDefault();
+		start = { x: e.clientX, y: e.clientY };
+		window.addEventListener( 'mousemove', move, true );
+		window.addEventListener( 'mouseup', finish, true );
 	} );
 
 	$( 'cancel' ).onclick = cleanup;

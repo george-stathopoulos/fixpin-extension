@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "FixPin: show support where it breaks",
   "short_name": "FixPin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Point at a problem on any web page and share a private, expiring link with the screenshot, the spot, and any errors.",
   "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" },
   "action": { "default_title": "Spotlight a problem", "default_popup": "src/popup.html" },
